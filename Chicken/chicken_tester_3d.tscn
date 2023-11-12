@@ -9,10 +9,10 @@ size = Vector2(16, 16)
 [sub_resource type="BoxShape3D" id="BoxShape3D_3udxc"]
 size = Vector3(16, 0.1, 16)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_8ya8g"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_qk4mr"]
 height = 0.75
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_0go71"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_843e2"]
 height = 0.75
 
 [node name="ChickenTester3D" type="Node3D"]
@@ -27,29 +27,32 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
 shape = SubResource("BoxShape3D_3udxc")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.10654, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.107, 0.01, 0)
+axis_lock_angular_x = true
+axis_lock_angular_z = true
 script = ExtResource("1_lepkl")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
-shape = SubResource("CylinderShape3D_8ya8g")
+shape = SubResource("CylinderShape3D_qk4mr")
 
 [node name="ChickenAnimationStateMachine" parent="CharacterBody3D" instance=ExtResource("2_8noba")]
 
 [node name="CharacterBody3D2" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.09605, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.096, 0.01, 0)
+axis_lock_angular_x = true
+axis_lock_angular_z = true
 script = ExtResource("1_lepkl")
 _player_id = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
-shape = SubResource("CylinderShape3D_0go71")
+shape = SubResource("CylinderShape3D_843e2")
 
-[node name="ChickenAnimationStateMachine" parent="CharacterBody3D2" node_paths=PackedStringArray("_animation_player") instance=ExtResource("2_8noba")]
-_animation_player = NodePath("../../CharacterBody3D/ChickenAnimationStateMachine/AnimationPlayer")
+[node name="ChickenAnimationStateMachine" parent="CharacterBody3D2" instance=ExtResource("2_8noba")]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.874966, 0.484184, 0, -0.484184, 0.874966, 0, 6.58027, 8.75531)
+transform = Transform3D(1, 0, 0, 0, 0.874966, 0.484184, 0, -0.484184, 0.874966, 0, 3.73468, 4.2911)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.627583, 0.77855, 0, -0.77855, 0.627583, 0, 0, 0)

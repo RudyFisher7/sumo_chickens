@@ -1,20 +1,53 @@
-[gd_scene load_steps=3 format=3 uid="uid://ddi7n5lwqyaoc"]
+[gd_scene load_steps=9 format=3 uid="uid://ddi7n5lwqyaoc"]
 
 [ext_resource type="PackedScene" uid="uid://c7pc217pj4f2j" path="res://Chicken/assets/chicken.glb" id="1_01ulf"]
 [ext_resource type="Script" path="res://Chicken/chicken_animation_state_machine.gd" id="2_ugrg6"]
 
-[node name="ChickenAnimationStateMachine" node_paths=PackedStringArray("_animation_player") instance=ExtResource("1_01ulf")]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ml316"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_uviub"]
+animation = &"Jump"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4vubm"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kv5db"]
+xfade_time = 0.05
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rwxyn"]
+xfade_time = 0.05
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_rd6f0"]
+states/Idle/node = SubResource("AnimationNodeAnimation_ml316")
+states/Idle/position = Vector2(393, 100)
+states/Jump/node = SubResource("AnimationNodeAnimation_uviub")
+states/Jump/position = Vector2(584, 100)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_4vubm"), "Idle", "Jump", SubResource("AnimationNodeStateMachineTransition_kv5db"), "Jump", "Idle", SubResource("AnimationNodeStateMachineTransition_rwxyn")]
+
+[node name="ChickenAnimationStateMachine" node_paths=PackedStringArray("_animation_tree") instance=ExtResource("1_01ulf")]
 script = ExtResource("2_ugrg6")
-_animation_player = NodePath("AnimationPlayer")
+_animation_tree = NodePath("AnimationTree")
 
 [node name="Skeleton3D" parent="Armature" index="0"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
-bones/1/position = Vector3(9.06208e-15, 0.642937, -0.249841)
-bones/5/rotation = Quaternion(-0.226827, -0.0673194, -0.784266, 0.573536)
-bones/6/rotation = Quaternion(0.0331132, 0.0221996, -0.460916, 0.886548)
-bones/7/rotation = Quaternion(-0.600467, 0.052543, -0.0170746, 0.797739)
-bones/8/rotation = Quaternion(-0.340449, 0.00381019, -0.0755755, 0.937213)
-bones/9/rotation = Quaternion(-0.226827, 0.0673196, 0.784266, 0.573536)
-bones/10/rotation = Quaternion(0.0331131, -0.0221996, 0.460916, 0.886548)
-bones/11/rotation = Quaternion(-0.600467, -0.052543, 0.0170745, 0.797739)
-bones/12/rotation = Quaternion(-0.340449, -0.0038102, 0.0755755, 0.937213)
+bones/1/rotation = Quaternion(0.22907, -1.1604e-07, -2.73072e-08, 0.97341)
+bones/2/rotation = Quaternion(0.493869, -2.07315e-07, -2.35496e-07, 0.869537)
+bones/3/rotation = Quaternion(-0.52191, 1.01686e-07, 6.22165e-08, 0.853001)
+bones/4/rotation = Quaternion(-0.753068, 3.76015e-17, 7.44972e-17, 0.657943)
+bones/4/scale = Vector3(1, 1, 1)
+bones/5/rotation = Quaternion(-0.260782, -0.0603037, -0.702538, 0.659391)
+bones/5/scale = Vector3(1, 1, 1)
+bones/6/rotation = Quaternion(0.0973403, -0.00107322, 0.00823621, 0.995216)
+bones/7/rotation = Quaternion(0.0852746, -0.000917771, -0.0244797, 0.996056)
+bones/8/rotation = Quaternion(-0.242264, 0.0142611, -0.0741647, 0.967266)
+bones/9/rotation = Quaternion(-0.260782, 0.0603039, 0.702538, 0.659391)
+bones/9/scale = Vector3(1, 1, 1)
+bones/10/rotation = Quaternion(0.0973403, 0.0010732, -0.00823625, 0.995216)
+bones/11/rotation = Quaternion(0.0852746, 0.000917771, 0.0244797, 0.996056)
+bones/12/rotation = Quaternion(-0.242264, -0.0142611, 0.0741647, 0.967266)
+bones/14/rotation = Quaternion(-0.707107, 0, 0.707107, -6.32203e-08)
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="2"]
+tree_root = SubResource("AnimationNodeStateMachine_rd6f0")
+anim_player = NodePath("../AnimationPlayer")
+active = true

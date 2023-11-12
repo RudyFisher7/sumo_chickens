@@ -17,8 +17,10 @@ enum {
 
 @export_enum("PLAYER_1", "PLAYER_2") var _player_id: int = PLAYER_1
 
+
 var _sumo_size: float = 0.0
 
+var _set_velocity: Vector3 = Vector3.ZERO
 var _speed_x: float = 0.0
 var _speed_z: float = 0.0
 var _button_right: int = 0
@@ -50,23 +52,26 @@ func _physics_process(delta: float) -> void:
 	velocity.x = _speed_x
 	velocity.z = _speed_z
 	
-	move_and_slide()
-	var collision: KinematicCollision3D = get_last_slide_collision()
 	# Handle Jump and gravity
-	if collision and _directionalInput():
+	if is_on_floor() and _directionalInput():
 		velocity.y = JUMP_VELOCITY + _sumo_size
-	else:
+	elif not is_on_floor():
 		velocity.y -= gravity * delta + (1 / _sumo_size)
-
-	if collision and collision.get_angle() > 0.0:
-		if collision.get_collider() is Chicken3D:
-			var other_chicken: Chicken3D = collision.get_collider() as Chicken3D
-			if other_chicken._sumo_size > 0.0 and _sumo_size > 0.0:
-				other_chicken._speed_x = _speed_x * PUSH_VELOCITY * (_sumo_size / other_chicken._sumo_size)
-				other_chicken._speed_z = _speed_z * PUSH_VELOCITY * (_sumo_size / other_chicken._sumo_size)
-				other_chicken.velocity.y += (JUMP_VELOCITY + _sumo_size) * (_sumo_size / other_chicken._sumo_size)
-				_speed_x = -_speed_x * BOUNCE_VELOCITY * (other_chicken._sumo_size / _sumo_size)
-				_speed_z = -_speed_z * BOUNCE_VELOCITY * (other_chicken._sumo_size / _sumo_size)
+	
+	print(velocity)
+	
+	move_and_slide()
+	
+	var collision: KinematicCollision3D = get_last_slide_collision()
+	
+	if collision and collision.get_collider() is Chicken3D:
+		var other_chicken: Chicken3D = collision.get_collider() as Chicken3D
+		if other_chicken._sumo_size > 0.0 and _sumo_size > 0.0:
+			other_chicken._speed_x = _set_velocity.x * PUSH_VELOCITY * (_sumo_size / other_chicken._sumo_size)
+			other_chicken._speed_z = _set_velocity.z * PUSH_VELOCITY * (_sumo_size / other_chicken._sumo_size)
+			other_chicken.velocity.y += (JUMP_VELOCITY + _sumo_size) * (_sumo_size / other_chicken._sumo_size)
+			_speed_x = -_set_velocity.x * BOUNCE_VELOCITY * (other_chicken._sumo_size / _sumo_size)
+			_speed_z = -_set_velocity.z * BOUNCE_VELOCITY * (other_chicken._sumo_size / _sumo_size)
 	
 	_speed_x *= FRICTION_AMOUNT
 	_speed_z *= FRICTION_AMOUNT
@@ -77,18 +82,24 @@ func _physics_process(delta: float) -> void:
 func _directionalInput() -> bool:
 	var wasPressed := false
 	
+	_set_velocity = Vector3.ZERO
+	
 	if Input.is_key_pressed(_button_right):
-		_speed_x = SPEED
+		_set_velocity.x = SPEED
 		wasPressed = true
 	if Input.is_key_pressed(_button_left):
-		_speed_x = -SPEED
+		_set_velocity.x = -SPEED
 		wasPressed = true
 	if Input.is_key_pressed(_button_up):
-		_speed_z = -SPEED
+		_set_velocity.z = -SPEED
 		wasPressed = true
 	if Input.is_key_pressed(_button_down):
-		_speed_z = SPEED
+		_set_velocity.z = SPEED
 		wasPressed = true
-		
+	
+	if wasPressed:
+		_speed_x = _set_velocity.x
+		_speed_z = _set_velocity.z
+	
 	return wasPressed
 

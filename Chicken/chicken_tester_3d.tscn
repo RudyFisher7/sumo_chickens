@@ -8,11 +8,11 @@ size = Vector2(16, 16)
 [sub_resource type="BoxShape3D" id="BoxShape3D_3udxc"]
 size = Vector3(16, 0.1, 16)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_8byqn"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_8ya8g"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_jobws"]
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_5wuat"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_psvql"]
 
 [node name="ChickenTester3D" type="Node3D"]
 
@@ -31,7 +31,7 @@ script = ExtResource("1_lepkl")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("CylinderShape3D_8byqn")
+shape = SubResource("CylinderShape3D_8ya8g")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -44,7 +44,7 @@ _player_id = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("CylinderShape3D_5wuat")
+shape = SubResource("CylinderShape3D_psvql")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

@@ -28,14 +28,16 @@ alignment = 1
 [node name="RichTextLabel" type="RichTextLabel" parent="Control/VBoxContainer"]
 clip_contents = false
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/normal_font_size = 64
 bbcode_enabled = true
-text = "[center][tornado radius=16.0 freq=4.0 connected=0]Sumo Chickens[/tornado][/center]"
+text = "[center][tornado radius=16.0 freq=4.0 connected=0][color=BLACK]Chonky Chickens[/color][/tornado][/center]"
 fit_content = true
 
 [node name="Label" type="Label" parent="Control/VBoxContainer"]
 layout_mode = 2
-text = "Press \"Start\" or Spacebar\""
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "Press Spacebar or Start on Joypad"
 horizontal_alignment = 1
 vertical_alignment = 1
 

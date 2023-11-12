@@ -15,7 +15,7 @@ enum {
 }
 
 
-@export_enum("PLAYER_1", "PLAYER_2") var _player_id: int = PLAYER_1
+@export_enum("PLAYER_1", "PLAYER_2") var player_id: int = PLAYER_1
 
 var _joypad_id: int = 0
 
@@ -34,7 +34,7 @@ var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 
 func _ready() -> void:
-	match _player_id:
+	match player_id:
 		PLAYER_1:
 			_button_right = KEY_RIGHT
 			_button_left = KEY_LEFT
@@ -87,9 +87,9 @@ func _directionalInput() -> bool:
 	
 	var input_axes := Vector2.ZERO
 	
-	if _player_id == PLAYER_1:
+	if player_id == PLAYER_1:
 		input_axes = Input.get_vector("ui_right", "ui_left", "ui_down", "ui_up")
-	if _player_id == PLAYER_2:
+	if player_id == PLAYER_2:
 		input_axes = Input.get_vector("ui_right_2p", "ui_left_2p", "ui_down_2p", "ui_up_2p")
 	
 	_set_velocity.x = input_axes.x * -SPEED

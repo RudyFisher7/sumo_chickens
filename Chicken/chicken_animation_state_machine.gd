@@ -15,7 +15,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	look_at(-_parent_chicken.velocity)
+	look_at(_parent_chicken.velocity, Vector3.UP, true)
 	if _parent_chicken.is_on_floor():
 		_animation_player.play("Idle")
 	else:

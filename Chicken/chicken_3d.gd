@@ -37,13 +37,13 @@ func _ready() -> void:
 			_button_left = KEY_LEFT
 			_button_up = KEY_UP
 			_button_down = KEY_DOWN
-			_sumo_size = 1.0
+			_sumo_size = 4.9
 		PLAYER_2:
 			_button_right = KEY_D
 			_button_left = KEY_A
 			_button_up = KEY_W
 			_button_down = KEY_S
-			_sumo_size = 1.0
+			_sumo_size = 0.9
 
 
 func _physics_process(delta: float) -> void:
@@ -54,19 +54,19 @@ func _physics_process(delta: float) -> void:
 	var collision: KinematicCollision3D = get_last_slide_collision()
 	# Handle Jump and gravity
 	if collision and _directionalInput():
-		velocity.y = JUMP_VELOCITY * _sumo_size
+		velocity.y = JUMP_VELOCITY + _sumo_size
 	else:
-		velocity.y -= gravity * delta
+		velocity.y -= gravity * delta + (1 / _sumo_size)
 
 	if collision and collision.get_angle() > 0.0:
 		if collision.get_collider() is Chicken3D:
 			var other_chicken: Chicken3D = collision.get_collider() as Chicken3D
-			if other_chicken._sumo_size > 0.0:
-				other_chicken._speed_x = _speed_x * (_sumo_size / other_chicken._sumo_size) * PUSH_VELOCITY
-				other_chicken._speed_z = _speed_z * (_sumo_size / other_chicken._sumo_size) * PUSH_VELOCITY
-				other_chicken.velocity.y += JUMP_VELOCITY
-				_speed_x = -_speed_x * BOUNCE_VELOCITY
-				_speed_z = -_speed_z * BOUNCE_VELOCITY
+			if other_chicken._sumo_size > 0.0 and _sumo_size > 0.0:
+				other_chicken._speed_x = _speed_x * PUSH_VELOCITY * (_sumo_size / other_chicken._sumo_size)
+				other_chicken._speed_z = _speed_z * PUSH_VELOCITY * (_sumo_size / other_chicken._sumo_size)
+				other_chicken.velocity.y += (JUMP_VELOCITY + _sumo_size) * (_sumo_size / other_chicken._sumo_size)
+				_speed_x = -_speed_x * BOUNCE_VELOCITY * (other_chicken._sumo_size / _sumo_size)
+				_speed_z = -_speed_z * BOUNCE_VELOCITY * (other_chicken._sumo_size / _sumo_size)
 	
 	_speed_x *= FRICTION_AMOUNT
 	_speed_z *= FRICTION_AMOUNT

@@ -10,8 +10,10 @@ size = Vector2(16, 16)
 size = Vector3(16, 0.1, 16)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_8ya8g"]
+height = 0.75
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_0go71"]
+height = 0.75
 
 [node name="ChickenTester3D" type="Node3D"]
 
@@ -29,7 +31,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.10654, 0, 0)
 script = ExtResource("1_lepkl")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
 shape = SubResource("CylinderShape3D_8ya8g")
 
 [node name="ChickenAnimationStateMachine" parent="CharacterBody3D" instance=ExtResource("2_8noba")]
@@ -40,7 +42,7 @@ script = ExtResource("1_lepkl")
 _player_id = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
 shape = SubResource("CylinderShape3D_0go71")
 
 [node name="ChickenAnimationStateMachine" parent="CharacterBody3D2" node_paths=PackedStringArray("_animation_player") instance=ExtResource("2_8noba")]

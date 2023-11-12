@@ -1,13 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://bo2xuee18xort"]
+[gd_scene load_steps=8 format=3 uid="uid://bo2xuee18xort"]
 
 [ext_resource type="Script" path="res://Chicken/chicken_3d.gd" id="1_lepkl"]
 [ext_resource type="PackedScene" uid="uid://ddi7n5lwqyaoc" path="res://Chicken/chicken_animation_state_machine.tscn" id="2_8noba"]
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_q6ilu"]
-size = Vector2(16, 16)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_3udxc"]
-size = Vector3(16, 0.1, 16)
+[ext_resource type="PackedScene" uid="uid://ct5w1381on688" path="res://sky_box.tscn" id="3_cq3d2"]
+[ext_resource type="ArrayMesh" uid="uid://mkgyhhav41ll" path="res://arenas/arenas_Plane_002.res" id="3_x7toc"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_qk4mr"]
 height = 0.75
@@ -15,16 +11,10 @@ height = 0.75
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_843e2"]
 height = 0.75
 
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_e18nx"]
+data = PackedVector3Array(-7.9787, 0, 16, 7.9787, -20, 16, -7.9787, -20, 16, -7.9787, 0, 16, 7.9787, 0, 16, 7.9787, -20, 16, 16, 0, 7.9787, 16, -20, -7.9787, 16, -20, 7.9787, 16, 0, 7.9787, 16, 0, -7.9787, 16, -20, -7.9787, 7.9787, 0, -16, -7.9787, -20, -16, 7.9787, -20, -16, 7.9787, 0, -16, -7.9787, 0, -16, -7.9787, -20, -16, -16, 0, 7.9787, 7.9787, 0, 16, -7.9787, 0, 16, 7.9787, 0, 16, 16, 0, -7.9787, 16, 0, 7.9787, 16, 0, -7.9787, -7.9787, 0, -16, 7.9787, 0, -16, -7.9787, 0, -16, -16, 0, 7.9787, -16, 0, -7.9787, -16, 0, 7.9787, 16, 0, -7.9787, 7.9787, 0, 16, 16, 0, -7.9787, -16, 0, 7.9787, -7.9787, 0, -16, -16, 0, -7.9787, -7.9787, -20, -16, -7.9787, 0, -16, -16, 0, -7.9787, -16, -20, -7.9787, -7.9787, -20, -16, 16, -20, -7.9787, 7.9787, 0, -16, 7.9787, -20, -16, 16, -20, -7.9787, 16, 0, -7.9787, 7.9787, 0, -16, 16, 0, 7.9787, 7.9787, -20, 16, 7.9787, 0, 16, 16, 0, 7.9787, 16, -20, 7.9787, 7.9787, -20, 16, -16, -20, 7.9787, -7.9787, 0, 16, -7.9787, -20, 16, -16, -20, 7.9787, -16, 0, 7.9787, -7.9787, 0, 16, -16, 0, -7.9787, -16, -20, 7.9787, -16, -20, -7.9787, -16, 0, -7.9787, -16, 0, 7.9787, -16, -20, 7.9787)
+
 [node name="ChickenTester3D" type="Node3D"]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("PlaneMesh_q6ilu")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
-shape = SubResource("BoxShape3D_3udxc")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.107, 0.01, 0)
@@ -56,3 +46,13 @@ transform = Transform3D(1, 0, 0, 0, 0.874966, 0.484184, 0, -0.484184, 0.874966, 
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.627583, 0.77855, 0, -0.77855, 0.627583, 0, 0, 0)
+
+[node name="SkyBox" parent="." instance=ExtResource("3_cq3d2")]
+
+[node name="Arena" type="MeshInstance3D" parent="."]
+mesh = ExtResource("3_x7toc")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Arena"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_e18nx")

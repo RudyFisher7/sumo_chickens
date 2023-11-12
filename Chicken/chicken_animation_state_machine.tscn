@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddi7n5lwqyaoc"]
+
+[ext_resource type="PackedScene" uid="uid://c7pc217pj4f2j" path="res://Chicken/assets/chicken.glb" id="1_01ulf"]
+[ext_resource type="Script" path="res://Chicken/chicken_animation_state_machine.gd" id="2_ugrg6"]
+
+[node name="ChickenAnimationStateMachine" node_paths=PackedStringArray("_animation_player") instance=ExtResource("1_01ulf")]
+script = ExtResource("2_ugrg6")
+_animation_player = NodePath("AnimationPlayer")
+
+[node name="Skeleton3D" parent="Armature" index="0"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+bones/1/position = Vector3(9.06208e-15, 0.642937, -0.249841)
+bones/5/rotation = Quaternion(-0.226827, -0.0673194, -0.784266, 0.573536)
+bones/6/rotation = Quaternion(0.0331132, 0.0221996, -0.460916, 0.886548)
+bones/7/rotation = Quaternion(-0.600467, 0.052543, -0.0170746, 0.797739)
+bones/8/rotation = Quaternion(-0.340449, 0.00381019, -0.0755755, 0.937213)
+bones/9/rotation = Quaternion(-0.226827, 0.0673196, 0.784266, 0.573536)
+bones/10/rotation = Quaternion(0.0331131, -0.0221996, 0.460916, 0.886548)
+bones/11/rotation = Quaternion(-0.600467, -0.052543, 0.0170745, 0.797739)
+bones/12/rotation = Quaternion(-0.340449, -0.0038102, 0.0755755, 0.937213)

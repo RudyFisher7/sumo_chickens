@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ddi7n5lwqyaoc"]
+[gd_scene load_steps=14 format=3 uid="uid://ddi7n5lwqyaoc"]
 
 [ext_resource type="PackedScene" uid="uid://c7pc217pj4f2j" path="res://Chicken/assets/chicken.glb" id="1_01ulf"]
 [ext_resource type="Script" path="res://Chicken/chicken_animation_state_machine.gd" id="2_ugrg6"]
@@ -9,6 +9,9 @@ animation = &"Idle"
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_uviub"]
 animation = &"Jump"
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ao6fm"]
+animation = &"Run"
+
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4vubm"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kv5db"]
@@ -17,12 +20,22 @@ xfade_time = 0.05
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rwxyn"]
 xfade_time = 0.05
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yogcf"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wrnvt"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_knj16"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_204p2"]
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_rd6f0"]
 states/Idle/node = SubResource("AnimationNodeAnimation_ml316")
 states/Idle/position = Vector2(393, 100)
 states/Jump/node = SubResource("AnimationNodeAnimation_uviub")
 states/Jump/position = Vector2(584, 100)
-transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_4vubm"), "Idle", "Jump", SubResource("AnimationNodeStateMachineTransition_kv5db"), "Jump", "Idle", SubResource("AnimationNodeStateMachineTransition_rwxyn")]
+states/Run/node = SubResource("AnimationNodeAnimation_ao6fm")
+states/Run/position = Vector2(485, 194)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_4vubm"), "Idle", "Jump", SubResource("AnimationNodeStateMachineTransition_kv5db"), "Jump", "Idle", SubResource("AnimationNodeStateMachineTransition_rwxyn"), "Jump", "Run", SubResource("AnimationNodeStateMachineTransition_yogcf"), "Run", "Jump", SubResource("AnimationNodeStateMachineTransition_wrnvt"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_knj16"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_204p2")]
 
 [node name="ChickenAnimationStateMachine" node_paths=PackedStringArray("_animation_tree") instance=ExtResource("1_01ulf")]
 script = ExtResource("2_ugrg6")

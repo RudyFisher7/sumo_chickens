@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://bo2xuee18xort"]
+[gd_scene load_steps=9 format=3 uid="uid://bo2xuee18xort"]
 
 [ext_resource type="Script" path="res://Chicken/chicken_3d.gd" id="1_lepkl"]
 [ext_resource type="PackedScene" uid="uid://ddi7n5lwqyaoc" path="res://Chicken/chicken_animation_state_machine.tscn" id="2_8noba"]
 [ext_resource type="PackedScene" uid="uid://ct5w1381on688" path="res://sky_box.tscn" id="3_cq3d2"]
 [ext_resource type="ArrayMesh" uid="uid://mkgyhhav41ll" path="res://arenas/arenas_Plane_002.res" id="3_x7toc"]
+[ext_resource type="Script" path="res://Chicken/pause_and_quit_handler.gd" id="5_a4g77"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_qk4mr"]
 height = 0.75
@@ -56,3 +57,7 @@ mesh = ExtResource("3_x7toc")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_e18nx")
+
+[node name="Node3D" type="Node3D" parent="."]
+process_mode = 3
+script = ExtResource("5_a4g77")

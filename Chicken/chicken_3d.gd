@@ -58,8 +58,6 @@ func _physics_process(delta: float) -> void:
 	elif not is_on_floor():
 		velocity.y -= gravity * delta + (1 / _sumo_size)
 	
-	print(velocity)
-	
 	move_and_slide()
 	
 	var collision: KinematicCollision3D = get_last_slide_collision()

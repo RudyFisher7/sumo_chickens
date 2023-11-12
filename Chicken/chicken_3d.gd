@@ -17,12 +17,13 @@ enum {
 
 @export_enum("PLAYER_1", "PLAYER_2") var _player_id: int = PLAYER_1
 
+var _joypad_id: int = 0
 
-var _sumo_size: float = 0.0
+var sumo_size: float = 0.0
 
 var _set_velocity: Vector3 = Vector3.ZERO
-var _speed_x: float = 0.0
-var _speed_z: float = 0.0
+var speed_x: float = 0.0
+var speed_z: float = 0.0
 var _button_right: int = 0
 var _button_left: int = 0
 var _button_up: int = 0
@@ -39,24 +40,26 @@ func _ready() -> void:
 			_button_left = KEY_LEFT
 			_button_up = KEY_UP
 			_button_down = KEY_DOWN
-			_sumo_size = 4.9
+			sumo_size = 4.9
+			_joypad_id = 0
 		PLAYER_2:
 			_button_right = KEY_D
 			_button_left = KEY_A
 			_button_up = KEY_W
 			_button_down = KEY_S
-			_sumo_size = 0.9
+			sumo_size = 0.9
+			_joypad_id = 1
 
 
 func _physics_process(delta: float) -> void:
-	velocity.x = _speed_x
-	velocity.z = _speed_z
+	velocity.x = speed_x
+	velocity.z = speed_z
 	
 	# Handle Jump and gravity
 	if is_on_floor() and _directionalInput():
-		velocity.y = JUMP_VELOCITY + _sumo_size
+		velocity.y = JUMP_VELOCITY + sumo_size
 	elif not is_on_floor():
-		velocity.y -= gravity * delta + (1 / _sumo_size)
+		velocity.y -= gravity * delta + (1 / sumo_size)
 	
 	move_and_slide()
 	
@@ -64,40 +67,39 @@ func _physics_process(delta: float) -> void:
 	
 	if collision and collision.get_collider() is Chicken3D:
 		var other_chicken: Chicken3D = collision.get_collider() as Chicken3D
-		if other_chicken._sumo_size > 0.0 and _sumo_size > 0.0:
-			other_chicken._speed_x = _set_velocity.x * PUSH_VELOCITY * (_sumo_size / other_chicken._sumo_size)
-			other_chicken._speed_z = _set_velocity.z * PUSH_VELOCITY * (_sumo_size / other_chicken._sumo_size)
-			other_chicken.velocity.y += (JUMP_VELOCITY + _sumo_size) * (_sumo_size / other_chicken._sumo_size)
-			_speed_x = -_set_velocity.x * BOUNCE_VELOCITY * (other_chicken._sumo_size / _sumo_size)
-			_speed_z = -_set_velocity.z * BOUNCE_VELOCITY * (other_chicken._sumo_size / _sumo_size)
+		if other_chicken.sumo_size > 0.0 and sumo_size > 0.0:
+			other_chicken.speed_x = _set_velocity.x * PUSH_VELOCITY * (sumo_size / other_chicken.sumo_size)
+			other_chicken.speed_z = _set_velocity.z * PUSH_VELOCITY * (sumo_size / other_chicken.sumo_size)
+			other_chicken.velocity.y += (JUMP_VELOCITY + sumo_size) * (sumo_size / other_chicken.sumo_size)
+			speed_x = -_set_velocity.x * BOUNCE_VELOCITY * (other_chicken.sumo_size / sumo_size)
+			speed_z = -_set_velocity.z * BOUNCE_VELOCITY * (other_chicken.sumo_size / sumo_size)
 	
-	_speed_x *= FRICTION_AMOUNT
-	_speed_z *= FRICTION_AMOUNT
+	speed_x *= FRICTION_AMOUNT
+	speed_z *= FRICTION_AMOUNT
 
 
 
 
 func _directionalInput() -> bool:
-	var wasPressed := false
+	var was_pressed := false
 	
 	_set_velocity = Vector3.ZERO
 	
-	if Input.is_key_pressed(_button_right):
-		_set_velocity.x = SPEED
-		wasPressed = true
-	if Input.is_key_pressed(_button_left):
-		_set_velocity.x = -SPEED
-		wasPressed = true
-	if Input.is_key_pressed(_button_up):
-		_set_velocity.z = -SPEED
-		wasPressed = true
-	if Input.is_key_pressed(_button_down):
-		_set_velocity.z = SPEED
-		wasPressed = true
+	var input_axes := Vector2.ZERO
 	
-	if wasPressed:
-		_speed_x = _set_velocity.x
-		_speed_z = _set_velocity.z
+	if _player_id == PLAYER_1:
+		input_axes = Input.get_vector("ui_right", "ui_left", "ui_down", "ui_up")
+	if _player_id == PLAYER_2:
+		input_axes = Input.get_vector("ui_right_2p", "ui_left_2p", "ui_down_2p", "ui_up_2p")
 	
-	return wasPressed
+	_set_velocity.x = input_axes.x * -SPEED
+	_set_velocity.z = input_axes.y * -SPEED
+	
+	was_pressed = input_axes.length() > 0.0
+	
+	if was_pressed:
+		speed_x = _set_velocity.x
+		speed_z = _set_velocity.z
+	
+	return was_pressed
 

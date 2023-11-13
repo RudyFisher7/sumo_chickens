@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bo2xuee18xort"]
+[gd_scene load_steps=15 format=3 uid="uid://bo2xuee18xort"]
 
 [ext_resource type="Script" path="res://Chicken/chicken_3d.gd" id="1_lepkl"]
 [ext_resource type="PackedScene" uid="uid://ddi7n5lwqyaoc" path="res://Chicken/chicken_animation_state_machine.tscn" id="2_8noba"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://Chicken/pause_and_quit_handler.gd" id="5_a4g77"]
 [ext_resource type="Script" path="res://Chicken/safe_area.gd" id="5_dhkxd"]
 [ext_resource type="Script" path="res://score_label.gd" id="7_a46ib"]
+[ext_resource type="PackedScene" uid="uid://dv34fpqlspeph" path="res://food.tscn" id="8_iehvx"]
 
 [sub_resource type="GDScript" id="GDScript_8j44e"]
 script/source = "extends RichTextLabel
@@ -52,6 +53,27 @@ data = PackedVector3Array(-7.9787, 0, 16, 7.9787, -20, 16, -7.9787, -20, 16, -7.
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_5atoc"]
 height = 8.0
 radius = 24.0
+
+[sub_resource type="GDScript" id="GDScript_vwi3l"]
+script/source = "extends Node3D
+
+
+var food_scene: PackedScene = preload(\"res://food.tscn\")
+
+
+func _ready() -> void:
+	$Timer.wait_time = 2.3
+
+func _on_timer_timeout() -> void:
+	if get_child_count() < 9:
+		var food: Node3D = food_scene.instantiate() as Node3D
+		food.global_position = global_position
+		food.global_position.x += randf_range(-4.0, 4.0)
+		food.global_position.z += randf_range(-4.0, 4.0)
+		add_child(food)
+		food.owner = self
+		$Timer.wait_time = randf_range(1.0, 4.7)
+"
 
 [node name="ChickenTester3D" type="Node3D"]
 
@@ -223,4 +245,13 @@ script = ExtResource("5_dhkxd")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.62157, 0)
 shape = SubResource("CylinderShape3D_5atoc")
 
+[node name="FoodSpawner" type="Node3D" parent="."]
+script = SubResource("GDScript_vwi3l")
+
+[node name="Area3D" parent="FoodSpawner" instance=ExtResource("8_iehvx")]
+
+[node name="Timer" type="Timer" parent="FoodSpawner"]
+autostart = true
+
 [connection signal="body_exited" from="Arena/Area3D" to="Arena/Area3D" method="_on_body_exited"]
+[connection signal="timeout" from="FoodSpawner/Timer" to="FoodSpawner" method="_on_timer_timeout"]

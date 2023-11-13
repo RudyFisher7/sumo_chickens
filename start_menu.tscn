@@ -1,9 +1,36 @@
-[gd_scene load_steps=5 format=3 uid="uid://dpjsq66imejsr"]
+[gd_scene load_steps=7 format=3 uid="uid://dpjsq66imejsr"]
 
 [ext_resource type="Script" path="res://start_menu.gd" id="1_1j08u"]
 [ext_resource type="PackedScene" uid="uid://ct5w1381on688" path="res://sky_box.tscn" id="1_3mrb7"]
 [ext_resource type="PackedScene" uid="uid://dufubmy0mkl3t" path="res://arenas/arenas.glb" id="2_bddj6"]
 [ext_resource type="PackedScene" uid="uid://csd8ti2himso2" path="res://Chicken/running_chicken.tscn" id="3_6436y"]
+[ext_resource type="AudioStream" uid="uid://disxwgblceghu" path="res://audio/Chickens2.mp3" id="5_ho3p2"]
+
+[sub_resource type="GDScript" id="GDScript_l8pta"]
+script/source = "extends AudioStreamPlayer
+
+
+var _chickens_1: AudioStreamMP3 = preload(\"res://audio/Chickens1.mp3\")
+var _chickens_2: AudioStreamMP3 = preload(\"res://audio/Chickens1.mp3\")
+var _go_chicken_go: AudioStreamMP3 = preload(\"res://audio/Gochickengo.mp3\")
+
+
+func _ready() -> void:
+	var i: int = GlobalScore.i
+	GlobalScore.increment_i()
+	
+	if i == 0:
+		stream = _chickens_1
+	elif i % 4 == 0:
+		stream = _go_chicken_go
+	elif i % 3 == 0:
+		stream = _chickens_2
+	elif i % 2 == 0:
+		stream = _chickens_1
+	
+	if stream != null:
+		play()
+"
 
 [node name="StartMenu" type="Node3D"]
 script = ExtResource("1_1j08u")
@@ -80,3 +107,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.21949, 0, 2.92228)
 
 [node name="RunningChicken10" parent="." instance=ExtResource("3_6436y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2943, 0, 3.53874)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_ho3p2")
+script = SubResource("GDScript_l8pta")

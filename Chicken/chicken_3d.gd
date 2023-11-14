@@ -2,6 +2,9 @@ class_name Chicken3D
 extends CharacterBody3D
 
 
+signal chonk_level_increased(value: float)
+
+
 const SPEED: float = 10.0
 const JUMP_VELOCITY: float = 1.5
 const PUSH_VELOCITY: float = 0.5
@@ -22,7 +25,14 @@ enum {
 
 var _joypad_id: int = 0
 
-var sumo_size: float = 0.0
+var _sumo_size: float = 0.0
+var sumo_size: float:
+	set(value):
+		_sumo_size = value
+		chonk_level_increased.emit(value)
+	get:
+		return _sumo_size
+
 
 var _set_velocity: Vector3 = Vector3.ZERO
 var speed_x: float = 0.0

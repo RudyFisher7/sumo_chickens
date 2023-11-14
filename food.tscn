@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://dv34fpqlspeph"]
+[gd_scene load_steps=7 format=3 uid="uid://dv34fpqlspeph"]
 
+[ext_resource type="Texture2D" uid="uid://ba72d2knkqlhg" path="res://watermelon_3 Pallets_High_Res.png" id="1_0g5sv"]
 [ext_resource type="ArrayMesh" uid="uid://b3qxw8d67nmmm" path="res://cake_Cube.res" id="1_6xy0j"]
 [ext_resource type="AudioStream" uid="uid://qx7x3rawebg7" path="res://audio/Imbigger.mp3" id="1_g70yp"]
 
@@ -47,6 +48,10 @@ func _on_body_entered(body: Node3D) -> void:
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_75luc"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_78546"]
+shading_mode = 0
+albedo_texture = ExtResource("1_0g5sv")
+
 [node name="Area3D" type="Area3D"]
 script = SubResource("GDScript_0qotw")
 
@@ -55,6 +60,7 @@ shape = SubResource("SphereShape3D_75luc")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_78546")
 mesh = ExtResource("1_6xy0j")
 skeleton = NodePath("../CollisionShape3D")
 

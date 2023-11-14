@@ -1,21 +1,28 @@
-[gd_scene load_steps=18 format=3 uid="uid://bo2xuee18xort"]
+[gd_scene load_steps=22 format=3 uid="uid://bo2xuee18xort"]
 
 [ext_resource type="Script" path="res://Chicken/chicken_3d.gd" id="1_lepkl"]
 [ext_resource type="PackedScene" uid="uid://ddi7n5lwqyaoc" path="res://Chicken/chicken_animation_state_machine.tscn" id="2_8noba"]
-[ext_resource type="PackedScene" uid="uid://ct5w1381on688" path="res://sky_box.tscn" id="3_cq3d2"]
+[ext_resource type="PackedScene" path="res://sky_box.tscn" id="3_cq3d2"]
 [ext_resource type="ArrayMesh" uid="uid://mkgyhhav41ll" path="res://arenas/arenas_Plane_002.res" id="3_x7toc"]
+[ext_resource type="Script" path="res://Chicken/ending.gd" id="4_fxuex"]
 [ext_resource type="Script" path="res://Chicken/pause_and_quit_handler.gd" id="5_a4g77"]
 [ext_resource type="Script" path="res://Chicken/safe_area.gd" id="5_dhkxd"]
+[ext_resource type="AudioStream" uid="uid://cctd5hmhl6lxy" path="res://audio/sfx-walk.mp3" id="6_wi1gn"]
+[ext_resource type="AudioStream" uid="uid://b46gwi2c574n5" path="res://audio/sfx-bounce.mp3" id="7_0xqsm"]
 [ext_resource type="Script" path="res://score_label.gd" id="7_a46ib"]
-[ext_resource type="PackedScene" uid="uid://dv34fpqlspeph" path="res://food.tscn" id="8_iehvx"]
+[ext_resource type="PackedScene" uid="uid://b6lvtfvhrurhq" path="res://food.tscn" id="8_iehvx"]
+[ext_resource type="AudioStream" uid="uid://cd1hou0nw21mt" path="res://audio/sfx-elimination-short.mp3" id="10_68p6m"]
+[ext_resource type="AudioStream" uid="uid://cvr4eiqepqg6s" path="res://audio/sfx-conclusion.mp3" id="11_gtqam"]
+[ext_resource type="AudioStream" uid="uid://duntsjhi3kcts" path="res://audio/sfx-applause.mp3" id="12_f1bw0"]
 
 [sub_resource type="GDScript" id="GDScript_3sovk"]
 script/source = "extends Node3D
 
 
 func _ready() -> void:
-	if not GlobalMusic.playing:
+	if GlobalMusic.stream != GlobalMusic._battle:
 		GlobalMusic.play_battle_music()
+
 "
 
 [sub_resource type="GDScript" id="GDScript_8j44e"]
@@ -49,22 +56,6 @@ func _input(event: InputEvent) -> void:
 		GlobalScore.p1_score = 0
 		GlobalScore.p2_score = 0
 		get_tree().change_scene_to_file(\"res://start_menu.tscn\")
-"
-
-[sub_resource type="GDScript" id="GDScript_dtjpj"]
-script/source = "extends ProgressBar
-
-
-func _on_character_body_3d_chonk_level_increased(in_value: float) -> void:
-	value = in_value
-"
-
-[sub_resource type="GDScript" id="GDScript_e4tt6"]
-script/source = "extends ProgressBar
-
-
-func _on_character_body_3d_2_chonk_level_increased(in_value: float) -> void:
-	value = in_value
 "
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_qk4mr"]
@@ -124,84 +115,90 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer5" type="VBoxContainer" parent="Control"]
-visible = false
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -261.0
-offset_top = -73.0
-offset_right = 261.0
-offset_bottom = 73.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 8
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
 
-[node name="Label" type="Label" parent="Control/VBoxContainer5"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "Push your opponent off the grass to win!"
-horizontal_alignment = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer5"]
-layout_mode = 2
-theme_override_constants/separation = 16
-alignment = 1
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/VBoxContainer5/HBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Control/VBoxContainer5/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="Control/VBoxContainer"]
 layout_mode = 2
 text = "P1 Controls:"
 horizontal_alignment = 1
 
-[node name="Label3" type="Label" parent="Control/VBoxContainer5/HBoxContainer/VBoxContainer"]
+[node name="Label3" type="Label" parent="Control/VBoxContainer"]
 layout_mode = 2
-text = "WASD Keys/Left Joystick: Move"
+text = "wasd/left joystick: move"
 horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="Control/VBoxContainer5/HBoxContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="Control/VBoxContainer"]
 layout_mode = 2
-text = "H Key/Joypad Back: Quit to title screen"
+text = "h/joypad back: quit to title screen"
 horizontal_alignment = 1
 
-[node name="Label4" type="Label" parent="Control/VBoxContainer5/HBoxContainer/VBoxContainer"]
+[node name="Label4" type="Label" parent="Control/VBoxContainer"]
 layout_mode = 2
-text = "Spacebar/Joypad Start: Pause"
+text = "spacebar/joypad start: pause"
 horizontal_alignment = 1
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="Control/VBoxContainer5/HBoxContainer"]
-layout_mode = 2
+[node name="VBoxContainer2" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -259.0
+offset_top = -86.0
+grow_horizontal = 0
+grow_vertical = 0
 
-[node name="Label" type="Label" parent="Control/VBoxContainer5/HBoxContainer/VBoxContainer2"]
+[node name="Label" type="Label" parent="Control/VBoxContainer2"]
 layout_mode = 2
 text = "P2 Controls:"
 horizontal_alignment = 1
 
-[node name="Label3" type="Label" parent="Control/VBoxContainer5/HBoxContainer/VBoxContainer2"]
+[node name="Label3" type="Label" parent="Control/VBoxContainer2"]
 layout_mode = 2
-text = "Arrow Keys/Left Joystick: Move"
+text = "arrow keys/left joystick: move"
 horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="Control/VBoxContainer5/HBoxContainer/VBoxContainer2"]
+[node name="Label2" type="Label" parent="Control/VBoxContainer2"]
 layout_mode = 2
-text = "H Key/Joypad Back: Quit to title screen"
+text = "h/joypad back: quit to title screen"
 horizontal_alignment = 1
 
-[node name="Label5" type="Label" parent="Control/VBoxContainer5/HBoxContainer/VBoxContainer2"]
+[node name="Label5" type="Label" parent="Control/VBoxContainer2"]
 layout_mode = 2
-text = "Spacebar/Joypad Start: Pause"
+text = "spacebar/joypad start: pause"
 horizontal_alignment = 1
 
-[node name="Label3" type="RichTextLabel" parent="Control"]
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 1
+offset_right = 127.0
+offset_bottom = 26.0
+text = "Player 1 Score: 0"
+script = ExtResource("7_a46ib")
+
+[node name="Label2" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -127.0
+offset_bottom = 26.0
+grow_horizontal = 0
+text = "Player 2 Score: 0"
+script = ExtResource("7_a46ib")
+player_id = 1
+
+[node name="Label3" type="RichTextLabel" parent="."]
 process_mode = 3
 visible = false
 clip_contents = false
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -220,90 +217,16 @@ fit_content = true
 scroll_active = false
 script = SubResource("GDScript_8j44e")
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="Control"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="EndingAudio" type="Node3D" parent="Label3"]
+script = ExtResource("4_fxuex")
 
-[node name="Label" type="Label" parent="Control/VBoxContainer3"]
-layout_mode = 2
-text = "Player 1 Score: 0"
-script = ExtResource("7_a46ib")
+[node name="AudioEnding" type="AudioStreamPlayer" parent="Label3/EndingAudio"]
+unique_name_in_owner = true
+stream = ExtResource("11_gtqam")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer3"]
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="Control/VBoxContainer3/HBoxContainer"]
-layout_mode = 2
-text = "Chonk Level"
-
-[node name="ProgressBar" type="ProgressBar" parent="Control/VBoxContainer3/HBoxContainer"]
-custom_minimum_size = Vector2(320, 24)
-layout_mode = 2
-min_value = 0.9
-max_value = 5.5
-value = 0.9
-show_percentage = false
-script = SubResource("GDScript_dtjpj")
-
-[node name="VBoxContainer4" type="VBoxContainer" parent="Control"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -320.0
-offset_bottom = 54.0
-grow_horizontal = 0
-
-[node name="Label2" type="Label" parent="Control/VBoxContainer4"]
-layout_mode = 2
-text = "Player 2 Score: 0"
-horizontal_alignment = 2
-script = ExtResource("7_a46ib")
-player_id = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer4"]
-layout_mode = 2
-
-[node name="ProgressBar" type="ProgressBar" parent="Control/VBoxContainer4/HBoxContainer"]
-custom_minimum_size = Vector2(320, 24)
-layout_mode = 2
-min_value = 0.9
-max_value = 5.5
-value = 0.9
-show_percentage = false
-script = SubResource("GDScript_e4tt6")
-
-[node name="Label2" type="Label" parent="Control/VBoxContainer4/HBoxContainer"]
-layout_mode = 2
-text = "Chonk Level"
-horizontal_alignment = 2
-
-[node name="ColorRect" type="ColorRect" parent="Control"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.0980392)
-
-[node name="Label" type="Label" parent="Control"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -20.0
-offset_top = -23.0
-offset_right = 20.0
-grow_horizontal = 2
-grow_vertical = 0
-text = "H Key/Joypad Start: Pause/Controls"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="AudioApplause" type="AudioStreamPlayer" parent="Label3/EndingAudio"]
+unique_name_in_owner = true
+stream = ExtResource("12_f1bw0")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.29416, 0.00999999, 4.76837e-07)
@@ -317,6 +240,14 @@ shape = SubResource("CylinderShape3D_qk4mr")
 
 [node name="ChickenAnimationStateMachine" parent="CharacterBody3D" instance=ExtResource("2_8noba")]
 
+[node name="AudioWalk" type="AudioStreamPlayer" parent="CharacterBody3D"]
+stream = ExtResource("6_wi1gn")
+volume_db = -0.702
+
+[node name="AudioBounce" type="AudioStreamPlayer" parent="CharacterBody3D"]
+stream = ExtResource("7_0xqsm")
+volume_db = -0.702
+
 [node name="CharacterBody3D2" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.47244, 0.00999999, 4.76837e-07)
 axis_lock_angular_x = true
@@ -329,6 +260,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
 shape = SubResource("CylinderShape3D_843e2")
 
 [node name="ChickenAnimationStateMachine" parent="CharacterBody3D2" instance=ExtResource("2_8noba")]
+
+[node name="AudioWalk" type="AudioStreamPlayer" parent="CharacterBody3D2"]
+stream = ExtResource("6_wi1gn")
+volume_db = -0.7
 
 [node name="Arena" type="Node3D" parent="."]
 
@@ -350,6 +285,9 @@ script = ExtResource("5_dhkxd")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.62157, 0)
 shape = SubResource("CylinderShape3D_5atoc")
 
+[node name="AudioDie" type="AudioStreamPlayer" parent="Arena/Area3D"]
+stream = ExtResource("10_68p6m")
+
 [node name="FoodSpawner" type="Node3D" parent="."]
 script = SubResource("GDScript_vwi3l")
 
@@ -358,7 +296,5 @@ script = SubResource("GDScript_vwi3l")
 [node name="Timer" type="Timer" parent="FoodSpawner"]
 autostart = true
 
-[connection signal="chonk_level_increased" from="CharacterBody3D" to="Control/VBoxContainer3/HBoxContainer/ProgressBar" method="_on_character_body_3d_chonk_level_increased"]
-[connection signal="chonk_level_increased" from="CharacterBody3D2" to="Control/VBoxContainer4/HBoxContainer/ProgressBar" method="_on_character_body_3d_2_chonk_level_increased"]
 [connection signal="body_exited" from="Arena/Area3D" to="Arena/Area3D" method="_on_body_exited"]
 [connection signal="timeout" from="FoodSpawner/Timer" to="FoodSpawner" method="_on_timer_timeout"]

@@ -11,6 +11,7 @@ func _on_body_exited(body: Node3D) -> void:
 			GlobalScore.p1_score += 1
 		
 		body_exited.disconnect(_on_body_exited) # for some reason this is being called twice
-		
+		$AudioDie.play()
+		await $AudioDie.finished
 		# Just reload the scene. Probably not efficient but good enough for a game jam.
 		get_tree().change_scene_to_file("res://Chicken/chicken_tester_3d.tscn")

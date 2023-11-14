@@ -2,14 +2,11 @@ class_name Chicken3D
 extends CharacterBody3D
 
 
-signal chonk_level_increased(value: float)
-
-
 const SPEED: float = 10.0
 const JUMP_VELOCITY: float = 1.5
 const PUSH_VELOCITY: float = 0.5
 const BOUNCE_VELOCITY: float = 0.2
-const FRICTION_AMOUNT: float = 0.95
+const FRICTION_AMOUNT: float = 0.91
 
 
 enum {
@@ -25,14 +22,7 @@ enum {
 
 var _joypad_id: int = 0
 
-var _sumo_size: float = 0.0
-var sumo_size: float:
-	set(value):
-		_sumo_size = value
-		chonk_level_increased.emit(value)
-	get:
-		return _sumo_size
-
+var sumo_size: float = 0.0
 
 var _set_velocity: Vector3 = Vector3.ZERO
 var speed_x: float = 0.0
@@ -66,7 +56,7 @@ func _ready() -> void:
 			_joypad_id = 1
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float) -> void:		
 	velocity.x = speed_x
 	velocity.z = speed_z
 	
@@ -88,11 +78,10 @@ func _physics_process(delta: float) -> void:
 			other_chicken.velocity.y += (JUMP_VELOCITY + sumo_size) * (sumo_size / other_chicken.sumo_size)
 			speed_x = -_set_velocity.x * BOUNCE_VELOCITY * (other_chicken.sumo_size / sumo_size)
 			speed_z = -_set_velocity.z * BOUNCE_VELOCITY * (other_chicken.sumo_size / sumo_size)
-	
+			$AudioBounce.play()
+			
 	speed_x *= FRICTION_AMOUNT
 	speed_z *= FRICTION_AMOUNT
-
-
 
 
 func _directionalInput() -> bool:
@@ -115,6 +104,7 @@ func _directionalInput() -> bool:
 	if was_pressed:
 		speed_x = _set_velocity.x
 		speed_z = _set_velocity.z
+		$AudioWalk.play()
 	
 	return was_pressed
 

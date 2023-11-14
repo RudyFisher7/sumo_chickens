@@ -1,7 +1,7 @@
 extends AudioStreamPlayer
 
 
-var _battle: AudioStreamMP3 = preload("res://audio/chonk_master.mp3")
+var _battle: AudioStreamMP3 = preload("res://audio/master_of_chonk_trimmed.mp3")
 
 
 func _ready() -> void:

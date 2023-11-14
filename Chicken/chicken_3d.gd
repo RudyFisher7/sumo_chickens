@@ -6,7 +6,7 @@ const SPEED: float = 10.0
 const JUMP_VELOCITY: float = 1.5
 const PUSH_VELOCITY: float = 0.5
 const BOUNCE_VELOCITY: float = 0.2
-const FRICTION_AMOUNT: float = 0.95
+const FRICTION_AMOUNT: float = 0.91
 
 
 enum {
@@ -37,13 +37,13 @@ func _ready() -> void:
 			_button_left = KEY_LEFT
 			_button_up = KEY_UP
 			_button_down = KEY_DOWN
-			_sumo_size = 4.9
+			_sumo_size = 2.0
 		PLAYER_2:
 			_button_right = KEY_D
 			_button_left = KEY_A
 			_button_up = KEY_W
 			_button_down = KEY_S
-			_sumo_size = 0.9
+			_sumo_size = 1.3
 
 
 func _physics_process(delta: float) -> void:

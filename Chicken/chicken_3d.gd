@@ -16,6 +16,9 @@ enum {
 
 
 @export_enum("PLAYER_1", "PLAYER_2") var player_id: int = PLAYER_1
+@export var mesh: MeshInstance3D = null
+@export var shape: CylinderShape3D = null
+
 
 var _joypad_id: int = 0
 
@@ -34,13 +37,15 @@ var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 
 func _ready() -> void:
+	shape = $CollisionShape3D.shape as CylinderShape3D
+	mesh = $ChickenAnimationStateMachine.mesh
 	match player_id:
 		PLAYER_1:
 			_button_right = KEY_RIGHT
 			_button_left = KEY_LEFT
 			_button_up = KEY_UP
 			_button_down = KEY_DOWN
-			sumo_size = 4.9
+			sumo_size = 0.9
 			_joypad_id = 0
 		PLAYER_2:
 			_button_right = KEY_D

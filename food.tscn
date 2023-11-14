@@ -1,9 +1,26 @@
 [gd_scene load_steps=5 format=3 uid="uid://dv34fpqlspeph"]
 
+[ext_resource type="ArrayMesh" uid="uid://b3qxw8d67nmmm" path="res://cake_Cube.res" id="1_6xy0j"]
 [ext_resource type="AudioStream" uid="uid://qx7x3rawebg7" path="res://audio/Imbigger.mp3" id="1_g70yp"]
 
 [sub_resource type="GDScript" id="GDScript_0qotw"]
 script/source = "extends Area3D
+
+
+static var i: int = 0
+
+
+var cake_mesh: ArrayMesh = preload(\"res://cake_Cube.res\")
+var watermelon_mesh: ArrayMesh = preload(\"res://watermelon_Sphere.res\")
+
+
+func _ready() -> void:
+	if i % 2 == 0:
+		$MeshInstance3D.mesh = cake_mesh
+	else:
+		$MeshInstance3D.mesh = watermelon_mesh
+	
+	i += 1
 
 
 func _process(delta: float) -> void:
@@ -15,10 +32,13 @@ func _on_body_entered(body: Node3D) -> void:
 		body_entered.disconnect(_on_body_entered)
 		var chicken: Chicken3D = body as Chicken3D
 		
+		chicken.shape.radius += 0.04
+		chicken.mesh.scale += Vector3(0.2, 0.2, 0.2)
 		chicken.sumo_size += 0.25
 		
 		$MeshInstance3D.hide()
 		
+		$AudioStreamPlayer.pitch_scale -= (chicken.sumo_size - 0.9) * 0.2
 		$AudioStreamPlayer.play()
 		
 		await $AudioStreamPlayer.finished
@@ -27,8 +47,6 @@ func _on_body_entered(body: Node3D) -> void:
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_75luc"]
 
-[sub_resource type="PrismMesh" id="PrismMesh_862xp"]
-
 [node name="Area3D" type="Area3D"]
 script = SubResource("GDScript_0qotw")
 
@@ -36,7 +54,8 @@ script = SubResource("GDScript_0qotw")
 shape = SubResource("SphereShape3D_75luc")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("PrismMesh_862xp")
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = ExtResource("1_6xy0j")
 skeleton = NodePath("../CollisionShape3D")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

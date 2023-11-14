@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bo2xuee18xort"]
+[gd_scene load_steps=16 format=3 uid="uid://bo2xuee18xort"]
 
 [ext_resource type="Script" path="res://Chicken/chicken_3d.gd" id="1_lepkl"]
 [ext_resource type="PackedScene" uid="uid://ddi7n5lwqyaoc" path="res://Chicken/chicken_animation_state_machine.tscn" id="2_8noba"]
@@ -8,6 +8,15 @@
 [ext_resource type="Script" path="res://Chicken/safe_area.gd" id="5_dhkxd"]
 [ext_resource type="Script" path="res://score_label.gd" id="7_a46ib"]
 [ext_resource type="PackedScene" uid="uid://dv34fpqlspeph" path="res://food.tscn" id="8_iehvx"]
+
+[sub_resource type="GDScript" id="GDScript_3sovk"]
+script/source = "extends Node3D
+
+
+func _ready() -> void:
+	if not GlobalMusic.playing:
+		GlobalMusic.play_battle_music()
+"
 
 [sub_resource type="GDScript" id="GDScript_8j44e"]
 script/source = "extends RichTextLabel
@@ -35,6 +44,7 @@ func _input(event: InputEvent) -> void:
 		return
 	if event is InputEventKey or event is InputEventJoypadButton:
 		get_viewport().set_input_as_handled()
+		await get_tree().create_timer(4.0).timeout
 		get_tree().paused = false
 		GlobalScore.p1_score = 0
 		GlobalScore.p2_score = 0
@@ -67,15 +77,16 @@ func _ready() -> void:
 func _on_timer_timeout() -> void:
 	if get_child_count() < 9:
 		var food: Node3D = food_scene.instantiate() as Node3D
+		add_child(food)
 		food.global_position = global_position
 		food.global_position.x += randf_range(-4.0, 4.0)
 		food.global_position.z += randf_range(-4.0, 4.0)
-		add_child(food)
 		food.owner = self
 		$Timer.wait_time = randf_range(1.0, 4.7)
 "
 
 [node name="ChickenTester3D" type="Node3D"]
+script = SubResource("GDScript_3sovk")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.581626, 0.813456, 0, -0.813456, 0.581626, 0, 7.276, 8.49226)

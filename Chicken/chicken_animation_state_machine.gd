@@ -2,6 +2,8 @@ class_name ChickenAnimationStateMachine
 extends Node3D
 
 
+@export var mesh: MeshInstance3D = null
+
 @export var _animation_tree: AnimationTree = null
 
 

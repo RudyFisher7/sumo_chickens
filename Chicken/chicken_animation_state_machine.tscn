@@ -42,8 +42,9 @@ states/Run/node = SubResource("AnimationNodeAnimation_ao6fm")
 states/Run/position = Vector2(485, 194)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_4vubm"), "Idle", "Jump", SubResource("AnimationNodeStateMachineTransition_kv5db"), "Jump", "Idle", SubResource("AnimationNodeStateMachineTransition_rwxyn"), "Jump", "Run", SubResource("AnimationNodeStateMachineTransition_yogcf"), "Run", "Jump", SubResource("AnimationNodeStateMachineTransition_wrnvt"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_knj16"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_204p2")]
 
-[node name="ChickenAnimationStateMachine" node_paths=PackedStringArray("_animation_tree") instance=ExtResource("1_01ulf")]
+[node name="ChickenAnimationStateMachine" node_paths=PackedStringArray("mesh", "_animation_tree") instance=ExtResource("1_01ulf")]
 script = ExtResource("2_ugrg6")
+mesh = NodePath("Armature/Skeleton3D/Chicken")
 _animation_tree = NodePath("AnimationTree")
 
 [node name="Skeleton3D" parent="Armature" index="0"]

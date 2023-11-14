@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dpjsq66imejsr"]
+[gd_scene load_steps=7 format=3 uid="uid://dhnagt5iytl41"]
 
 [ext_resource type="Script" path="res://start_menu.gd" id="1_1j08u"]
 [ext_resource type="PackedScene" uid="uid://ct5w1381on688" path="res://sky_box.tscn" id="1_3mrb7"]

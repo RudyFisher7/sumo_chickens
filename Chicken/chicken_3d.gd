@@ -78,7 +78,7 @@ func _physics_process(delta: float) -> void:
 			other_chicken.velocity.y += (JUMP_VELOCITY + sumo_size) * (sumo_size / other_chicken.sumo_size)
 			speed_x = -_set_velocity.x * BOUNCE_VELOCITY * (other_chicken.sumo_size / sumo_size)
 			speed_z = -_set_velocity.z * BOUNCE_VELOCITY * (other_chicken.sumo_size / sumo_size)
-			$AudioBounce.play()
+#			$AudioBounce.play()
 			
 	speed_x *= FRICTION_AMOUNT
 	speed_z *= FRICTION_AMOUNT

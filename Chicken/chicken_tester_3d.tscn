@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Chicken/chicken_3d.gd" id="1_lepkl"]
 [ext_resource type="PackedScene" uid="uid://ddi7n5lwqyaoc" path="res://Chicken/chicken_animation_state_machine.tscn" id="2_8noba"]
-[ext_resource type="PackedScene" path="res://sky_box.tscn" id="3_cq3d2"]
+[ext_resource type="PackedScene" uid="uid://ct5w1381on688" path="res://sky_box.tscn" id="3_cq3d2"]
 [ext_resource type="ArrayMesh" uid="uid://mkgyhhav41ll" path="res://arenas/arenas_Plane_002.res" id="3_x7toc"]
 [ext_resource type="Script" path="res://Chicken/ending.gd" id="4_fxuex"]
 [ext_resource type="Script" path="res://Chicken/pause_and_quit_handler.gd" id="5_a4g77"]
@@ -10,7 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://cctd5hmhl6lxy" path="res://audio/sfx-walk.mp3" id="6_wi1gn"]
 [ext_resource type="AudioStream" uid="uid://b46gwi2c574n5" path="res://audio/sfx-bounce.mp3" id="7_0xqsm"]
 [ext_resource type="Script" path="res://score_label.gd" id="7_a46ib"]
-[ext_resource type="PackedScene" uid="uid://b6lvtfvhrurhq" path="res://food.tscn" id="8_iehvx"]
+[ext_resource type="PackedScene" uid="uid://dv34fpqlspeph" path="res://food.tscn" id="8_iehvx"]
 [ext_resource type="AudioStream" uid="uid://cd1hou0nw21mt" path="res://audio/sfx-elimination-short.mp3" id="10_68p6m"]
 [ext_resource type="AudioStream" uid="uid://cvr4eiqepqg6s" path="res://audio/sfx-conclusion.mp3" id="11_gtqam"]
 [ext_resource type="AudioStream" uid="uid://duntsjhi3kcts" path="res://audio/sfx-applause.mp3" id="12_f1bw0"]

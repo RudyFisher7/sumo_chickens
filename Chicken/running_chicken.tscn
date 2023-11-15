@@ -1,0 +1,52 @@
+[gd_scene load_steps=8 format=3 uid="uid://csd8ti2himso2"]
+
+[ext_resource type="PackedScene" uid="uid://c7pc217pj4f2j" path="res://Chicken/assets/chicken.glb" id="1_736r3"]
+[ext_resource type="Script" path="res://Chicken/running_chicken.gd" id="2_rn12k"]
+[ext_resource type="Texture2D" uid="uid://dug5nvxnyap5w" path="res://Chicken/assets/chicken_3 Pallets_High_Res.png" id="3_1g4mr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6cukd"]
+shading_mode = 0
+albedo_texture = ExtResource("3_1g4mr")
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_r3lb8"]
+animation = &"Run"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_64eqn"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_fxeej"]
+states/Run/node = SubResource("AnimationNodeAnimation_r3lb8")
+states/Run/position = Vector2(361, 100)
+transitions = ["Start", "Run", SubResource("AnimationNodeStateMachineTransition_64eqn")]
+
+[node name="RunningChicken" node_paths=PackedStringArray("_animation_tree") instance=ExtResource("1_736r3")]
+script = ExtResource("2_rn12k")
+_animation_tree = NodePath("AnimationTree")
+
+[node name="Armature" parent="." index="0"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+
+[node name="Skeleton3D" parent="Armature" index="0"]
+bones/1/rotation = Quaternion(0.22907, -1.1604e-07, -2.73072e-08, 0.97341)
+bones/2/rotation = Quaternion(0.493869, -2.07315e-07, -2.35496e-07, 0.869537)
+bones/3/rotation = Quaternion(-0.52191, 1.01686e-07, 6.22165e-08, 0.853001)
+bones/4/rotation = Quaternion(-0.753068, 3.76015e-17, 7.44972e-17, 0.657943)
+bones/4/scale = Vector3(1, 1, 1)
+bones/5/rotation = Quaternion(-0.260782, -0.0603037, -0.702538, 0.659391)
+bones/5/scale = Vector3(1, 1, 1)
+bones/6/rotation = Quaternion(0.0973403, -0.00107322, 0.00823621, 0.995216)
+bones/7/rotation = Quaternion(0.0852746, -0.000917771, -0.0244797, 0.996056)
+bones/8/rotation = Quaternion(-0.242264, 0.0142611, -0.0741647, 0.967266)
+bones/9/rotation = Quaternion(-0.260782, 0.0603039, 0.702538, 0.659391)
+bones/9/scale = Vector3(1, 1, 1)
+bones/10/rotation = Quaternion(0.0973403, 0.0010732, -0.00823625, 0.995216)
+bones/11/rotation = Quaternion(0.0852746, 0.000917771, 0.0244797, 0.996056)
+bones/12/rotation = Quaternion(-0.242264, -0.0142611, 0.0741647, 0.967266)
+bones/14/rotation = Quaternion(-0.707107, 0, 0.707107, -6.32203e-08)
+
+[node name="Chicken" parent="Armature/Skeleton3D" index="0"]
+material_override = SubResource("StandardMaterial3D_6cukd")
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="2"]
+tree_root = SubResource("AnimationNodeStateMachine_fxeej")
+anim_player = NodePath("../AnimationPlayer")
+active = true

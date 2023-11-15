@@ -1,0 +1,113 @@
+[gd_scene load_steps=7 format=3 uid="uid://dhnagt5iytl41"]
+
+[ext_resource type="Script" path="res://start_menu.gd" id="1_1j08u"]
+[ext_resource type="PackedScene" uid="uid://ct5w1381on688" path="res://sky_box.tscn" id="1_3mrb7"]
+[ext_resource type="PackedScene" uid="uid://dufubmy0mkl3t" path="res://arenas/arenas.glb" id="2_bddj6"]
+[ext_resource type="PackedScene" uid="uid://csd8ti2himso2" path="res://Chicken/running_chicken.tscn" id="3_6436y"]
+[ext_resource type="AudioStream" uid="uid://disxwgblceghu" path="res://audio/Chickens2.mp3" id="5_ho3p2"]
+
+[sub_resource type="GDScript" id="GDScript_l8pta"]
+script/source = "extends AudioStreamPlayer
+
+
+var _chickens_1: AudioStreamMP3 = preload(\"res://audio/Chickens1.mp3\")
+var _chickens_2: AudioStreamMP3 = preload(\"res://audio/Chickens1.mp3\")
+var _go_chicken_go: AudioStreamMP3 = preload(\"res://audio/Gochickengo.mp3\")
+
+
+func _ready() -> void:
+	var i: int = GlobalScore.i
+	GlobalScore.increment_i()
+	
+	if i == 0:
+		stream = _chickens_1
+	elif i % 4 == 0:
+		stream = _go_chicken_go
+	elif i % 3 == 0:
+		stream = _chickens_2
+	elif i % 2 == 0:
+		stream = _chickens_1
+	
+	if stream != null:
+		play()
+"
+
+[node name="StartMenu" type="Node3D"]
+script = ExtResource("1_1j08u")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/VBoxContainer"]
+clip_contents = false
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 64
+bbcode_enabled = true
+text = "[center][tornado radius=16.0 freq=4.0 connected=0][color=BLACK]Chonky Chickens[/color][/tornado][/center]"
+fit_content = true
+
+[node name="Label" type="Label" parent="Control/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "Press Spacebar or Start on Joypad"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SkyBox" parent="." instance=ExtResource("1_3mrb7")]
+
+[node name="arenas" parent="." instance=ExtResource("2_bddj6")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.988103, 0.153796, 0, -0.153796, 0.988103, 0, 0.729155, 6.16426)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.882349, -0.187401, -0.431673, 0.470596, 0.35137, 0.809369, 0, -0.91729, 0.398221, 0, 0, 0)
+
+[node name="RunningChicken" parent="." instance=ExtResource("3_6436y")]
+transform = Transform3D(0.140158, 0, -0.990129, 0, 1, 0, 0.990129, 0, 0.140158, 3.48099, 0, 0)
+
+[node name="RunningChicken2" parent="." instance=ExtResource("3_6436y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.887754)
+
+[node name="RunningChicken3" parent="." instance=ExtResource("3_6436y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.06957, 0, -0.244328)
+
+[node name="RunningChicken4" parent="." instance=ExtResource("3_6436y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.39545, 0, 1.71343)
+
+[node name="RunningChicken5" parent="." instance=ExtResource("3_6436y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.18548, 0, 1.57643)
+
+[node name="RunningChicken6" parent="." instance=ExtResource("3_6436y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.99177)
+
+[node name="RunningChicken7" parent="." instance=ExtResource("3_6436y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.26315, 0, 0)
+
+[node name="RunningChicken8" parent="." instance=ExtResource("3_6436y")]
+transform = Transform3D(1, 0, 0, 0, 0.999841, 0.0178538, 0, -0.0178538, 0.999841, -2.96933, 0, 2.83763)
+
+[node name="RunningChicken9" parent="." instance=ExtResource("3_6436y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.21949, 0, 2.92228)
+
+[node name="RunningChicken10" parent="." instance=ExtResource("3_6436y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2943, 0, 3.53874)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_ho3p2")
+script = SubResource("GDScript_l8pta")

@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://ct5w1381on688"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xt1kf"]
+shading_mode = 0
+albedo_color = Color(0, 0.882353, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_sxivq"]
+material = SubResource("StandardMaterial3D_xt1kf")
+flip_faces = true
+radius = 32.0
+height = 64.0
+radial_segments = 16
+rings = 4
+
+[node name="SkyBox" type="MeshInstance3D"]
+mesh = SubResource("SphereMesh_sxivq")

@@ -1,0 +1,70 @@
+[gd_scene load_steps=7 format=3 uid="uid://dv34fpqlspeph"]
+
+[ext_resource type="Texture2D" uid="uid://ba72d2knkqlhg" path="res://watermelon_3 Pallets_High_Res.png" id="1_0g5sv"]
+[ext_resource type="ArrayMesh" uid="uid://b3qxw8d67nmmm" path="res://cake_Cube.res" id="1_6xy0j"]
+[ext_resource type="AudioStream" uid="uid://qx7x3rawebg7" path="res://audio/Imbigger.mp3" id="1_g70yp"]
+
+[sub_resource type="GDScript" id="GDScript_0qotw"]
+script/source = "extends Area3D
+
+
+static var i: int = 0
+
+
+var cake_mesh: ArrayMesh = preload(\"res://cake_Cube.res\")
+var watermelon_mesh: ArrayMesh = preload(\"res://watermelon_Sphere.res\")
+
+
+func _ready() -> void:
+	if i % 2 == 0:
+		$MeshInstance3D.mesh = cake_mesh
+	else:
+		$MeshInstance3D.mesh = watermelon_mesh
+	
+	i += 1
+
+
+func _process(delta: float) -> void:
+	global_rotate(Vector3.UP, delta)
+
+
+func _on_body_entered(body: Node3D) -> void:
+	if body is Chicken3D:
+		body_entered.disconnect(_on_body_entered)
+		var chicken: Chicken3D = body as Chicken3D
+		
+		chicken.shape.radius += 0.04
+		chicken.mesh.scale += Vector3(0.2, 0.2, 0.2)
+		chicken.sumo_size += 0.25
+		
+		$MeshInstance3D.hide()
+		
+		$AudioStreamPlayer.pitch_scale -= (chicken.sumo_size - 0.9) * 0.2
+		$AudioStreamPlayer.play()
+		
+		await $AudioStreamPlayer.finished
+		queue_free()
+"
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_75luc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_78546"]
+shading_mode = 0
+albedo_texture = ExtResource("1_0g5sv")
+
+[node name="Area3D" type="Area3D"]
+script = SubResource("GDScript_0qotw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_75luc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_78546")
+mesh = ExtResource("1_6xy0j")
+skeleton = NodePath("../CollisionShape3D")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_g70yp")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
